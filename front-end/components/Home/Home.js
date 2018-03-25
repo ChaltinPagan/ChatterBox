@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Clock, TvGuide} from "./SchedComp";
+import {Clock, TvGuide} from "./Schedule";
 
 class Schedule extends Component {
     constructor() {
