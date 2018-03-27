@@ -1,4 +1,114 @@
 import React, {Component} from 'react';
+import axios from 'axios';
+import { Link, Switch, Route } from "react-router-dom";
+
+export class Schedule extends Component {
+    constructor() {
+        super();
+        this.state = {
+            date: new Date(),
+            dateInput: "",
+            hour: new Date().getHours(), 
+            arr: [], 
+            userInput: ""
+        }
+    }
+
+    // Handles date input by user. Gets US TV schedule for day specified.
+    handleDateInput = () => {
+        const {userInput} = this.state;
+        axios.get(`http://api.tvmaze.com/schedule?date=${this.state.userInput}`)
+        .then( res => {
+            console.log("res:", res);
+            this.setState({
+                arr: res.data,
+                dateInput: userInput
+            })
+        })
+        .catch(error => console.log(error))
+    }
+
+    componentDidMount = () => {
+        this.handleDateInput();
+    }
+
+    // Increase schedule time by 1 hour. Stops at midnight.
+    handleMoreTime = () => {
+        const {hour} = this.state;
+        if (hour === 23) {
+            this.setState({
+                hour: hour
+            })
+        } else {
+            this.setState({
+                hour: hour + 1
+            })
+        }
+        
+    }
+
+    // Decreases schedule time by 1 hour. Stops at mignight.
+    handleLessTime = () => {
+        const {hour} = this.state;
+        if (hour === 0) {
+            this.setState({
+                hour: hour
+            })
+        } else {
+            this.setState({
+                hour: hour - 1
+            });
+        }
+    }
+
+    // Handles date input by user.
+    handleUserInput = (e) => {
+        this.setState({
+            userInput: e.target.value
+        })
+    }
+
+    // Resets the schedule to the current day.
+    handleReset = (e) => {
+        axios.get(`http://api.tvmaze.com/schedule`)
+        .then( res => {
+            console.log("res:", res);
+            this.setState({
+                arr: res.data,
+                hour: new Date().getHours(),
+                dateInput: "",
+                userInput: ""
+            })
+        })
+        .catch(error => console.log(error))
+    }
+
+    render() {
+        const {date, arr, hour, dateInput, userInput} = this.state;
+        return (
+            <div>
+                {/* Today's date and time. */}
+                <Clock date={date}/>
+
+                {/* TV schedule for the US. Displays new episodes only (no reruns). 
+                Displays shows in one hour blocks of time. */}
+                <TvGuide 
+                    hour={hour} 
+                    arr={arr} 
+                    dateInput={dateInput}
+                    moreTime={this.handleMoreTime}
+                    lessTime={this.handleLessTime} 
+                    handleDateInput={this.handleDateInput} 
+                    handleReset={this.handleReset} 
+                    handleUserInput={this.handleUserInput}
+                    userInput={userInput} />
+
+            </div>
+        )
+    }
+
+}
+
 
 export class Clock extends Component {
     constructor(props) {
@@ -104,7 +214,11 @@ export const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInp
                     {tv.map(el => 
                     <tr key={el.id}>
                         <td>{el.show.network.name}</td>
+<<<<<<< HEAD:front-end/components/Home/Schedule.js
                         <td><Link to={`/chat/${el.show.name}/${el.show.id}`}>{el.show.name}</Link></td>
+=======
+                <td><Link to={`/chat/${el.show.name}/${el.show.id}`}>{el.show.name}</Link></td>
+>>>>>>> 0a3fa0b5cc8c72c1176b218f8bbb1ef9449cf486:front-end/src/components/Home/Schedule.js
                         <td>{el.airtime.match(hour + ":00") ? schedHour1 :
                             schedHour1.replace(" ", el.airtime.slice(2).concat(" ")) }</td>
                         <td>{el.runtime}</td>
@@ -118,3 +232,8 @@ export const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInp
         </div>
     )
 }
+
+export default {
+    Clock, 
+    Schedule
+}; 
