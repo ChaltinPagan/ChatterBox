@@ -5,8 +5,6 @@ import LoginForm from './LoginForm'
 import ChatContainer from './Chat/ChatContainer'
 import '../styling/chatstyles.css'
 
-
-const socketUrl = "http://localhost:3100"
 export default class Layout extends Component {
 	
 	constructor(props) {
@@ -26,7 +24,7 @@ export default class Layout extends Component {
 	*	Create socket and connect to server.
 	*/
 	initSocket = ()=>{
-		const socket = io(socketUrl)
+		const socket = io('/')
 
 		socket.on('connect', ()=>{
 			console.log("Connected");
