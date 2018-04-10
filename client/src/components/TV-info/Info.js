@@ -32,7 +32,7 @@ export class Room extends Component {
     
         const {showid} = this.state;
         console.log('hi:' ,showid)
-        axios.get(`http://localhost:3100/shows/${showid}`)
+        axios.get(`/shows/${showid}`)
         .then(res => {
             let apiArr = Object.keys(res.data).map(key => {
                 return res.data[key];

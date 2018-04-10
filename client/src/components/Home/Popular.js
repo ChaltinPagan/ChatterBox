@@ -17,7 +17,7 @@ class Popular extends Component {
     // Filters out shows that have already aired.
     // Uses the /schedule endpoint and will change daily.
     handlePopular = () => {
-        axios.get('http://localhost:3100/shows/schedule')
+        axios.get('/shows/schedule')
         .then( res => {
 
         let hour = new Date().getHours();

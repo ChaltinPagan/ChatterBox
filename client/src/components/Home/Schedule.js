@@ -20,7 +20,7 @@ export class Schedule extends Component {
     handleDateInput = () => {
         // const userDate = document.getElementById('date').value;
         // axios.get(`http://api.tvmaze.com/schedule?date=${userDate}`)
-        axios.get(`http://localhost:3100/shows/schedule`)        
+        axios.get(`/shows/schedule`)        
         .then( res => {
             let apiArr = Object.keys(res.data).map(key => {
                 return res.data[key];
