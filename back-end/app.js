@@ -27,7 +27,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 io.on('connection', SocketManager);
 
@@ -41,6 +41,10 @@ io.on('connection', SocketManager);
 app.use('/', indexRouter);
 app.use('/shows', shows);
 app.use('/episodes', episodes);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '../client/build/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
