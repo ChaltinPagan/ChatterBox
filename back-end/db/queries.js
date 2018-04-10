@@ -1,5 +1,5 @@
 var pgp = require('pg-promise')({});
-var connectionString = 'postgres://localhost/chatterbox1';
+var connectionString = process.env.DATABASE_URL;
 var db = pgp(connectionString);
 let axios = require('axios');
 
@@ -16,12 +16,12 @@ function getAPI (url) {
                     let showLanguage = item.show.language;
                     let showSummary = item.show.summary;
 
-                    
+
                     let imageData = item.show.image;
-                    let showRatingData = item.show.rating; 
+                    let showRatingData = item.show.rating;
                     let showNetworkData = item.show.network;
                     let showNetworkNameData = item.show.network;
-                    
+
                     let epId = Number(item.id);
                     let airDate = item.airdate;
                     let airTime = item.airtime;
@@ -33,7 +33,7 @@ function getAPI (url) {
            if (imageData && showRatingData && showNetworkNameData) {
 
             let showNetworkName = item.show.network.name;
-            let showRating = item.show.rating.average; 
+            let showRating = item.show.rating.average;
             let showIMG = item.show.image.original;
 
             db.none('INSERT INTO shows (id, name, type, language, img_URL, show_summary, network_name, rating, active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showIMG, showSummary, showNetworkName, showRating, true])
@@ -71,10 +71,10 @@ function getAPI (url) {
             .catch((err) => {
                 console.log(err)
             })
-        }  
+        }
         }
            })
-       
+
     .catch(err => {
         console.error(err);
     })
@@ -174,4 +174,3 @@ module.exports = {
     getAPI,
     getSingleShow
 }
-
