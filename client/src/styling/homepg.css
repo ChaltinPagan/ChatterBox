@@ -9,7 +9,7 @@ body {
     height: 100%;
     color:black;
     overflow-x:hidden;
-    
+
 }
 
 table {
@@ -88,16 +88,16 @@ a {
     color:white;
     font-size:20px;
   }
-  
+
   .text{
     color:white;
   }
-  
+
   .nav-itemColor{
     color:white;
     text-transform: uppercase;
   }
-  
+
   .nav-itemColor:hover{
     background-color:#DDDBCB;
     color:white;
@@ -106,7 +106,7 @@ a {
     text-align: center;
     color:black;
   }
-  
+
 .footer {
     position: fixed;
     right: 0;
@@ -117,7 +117,7 @@ a {
     z-index: 5;
     background-color:rgb(172, 172, 172);
     opacity: .5;
-    text-align: right;  
+    text-align: right;
 }
 
 
@@ -144,19 +144,19 @@ a {
 } */
 
 .popular2{
-    width:90vw;  
+    width:90vw;
     margin-left:50px;
     color: black;
-    text-align: center; 
+    text-align: center;
     padding-left:100px;
-    
+
 }
 #pop-map {
     margin: 3px;
     display: inline-block;
     text-align:center;
     padding-left:100px;
-    
+
 }
 
 .pop-img {
@@ -178,18 +178,3 @@ a {
 .slick-arrow:before {
     color: #1B9AAA!important;
 }
-
-
-.slick-slide {
-    text-align: center;
-    color: #419be0;
-    background: white;
-    margin: 10px;
-    padding-left:800px;
-    
-  }
-
-  .slick-slide img{
-    text-align: center!important;
-    padding-left:100px!important;
-  }
