@@ -164,7 +164,7 @@ function getSchedule(req, res, next) {
       })
 }
 
-getAPI('https://api.tvmaze.com/schedule/');
+// getAPI('https://api.tvmaze.com/schedule/');
 
 
 module.exports = {
