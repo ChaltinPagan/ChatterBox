@@ -14,7 +14,7 @@ Be free to be a chatterbox!
 
 * Chat rooms for new episodes only.
 * Chat rooms are only available for the duration of the TV show.
-* Chat rooms have a capcity limit.
+* Chat rooms have a capacity limit.
 * Waiting rooms for shows yet to air that day.
 * TV schedule with listings of today's new episodes.
 
