@@ -62,7 +62,7 @@ TV Schedule:
 4. To run the database with PostgreSQL (on Linux):
     * Open a new terminal.
     * `cd back-end/db`
-    * `createdb chatterbox1`
+    * `createdb chatterbox`
     * `sudo service postgresql start`
-    * `psql -f tvAPI.sql chatterbox1`
+    * `psql -f tvAPI.sql chatterbox`
     * `sudo -u postgres psql`
