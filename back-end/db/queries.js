@@ -1,5 +1,5 @@
 var pgp = require('pg-promise')({});
-var connectionString = 'postgres://localhost/chatterbox1';
+var connectionString = 'postgres://localhost/chatterbox';
 var db = pgp(connectionString);
 let axios = require('axios');
 
@@ -10,7 +10,7 @@ function getAPI (url) {
                 for (let i=0; i<listOfData.length; i++){
                     let item = listOfData[i];
 
-                    let showId = Number(item.show.id);
+                    let showId = Number(item.id);
                     let showName = item.show.name;
                     let showType= item.show.type;
                     let showLanguage = item.show.language;
@@ -39,7 +39,7 @@ function getAPI (url) {
             db.none('INSERT INTO shows (id, name, type, language, img_URL, show_summary, network_name, rating, active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showIMG, showSummary, showNetworkName, showRating, true])
             .then(() => {
                 if (epSummary) {
-                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
+                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, ep_summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
                     .catch((err) => {
                         console.log(err)
                     })
@@ -57,7 +57,7 @@ function getAPI (url) {
             db.none('INSERT INTO shows (id, name, type, language, show_summary, active ) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showSummary, true])
             .then(() => {
                 if (epSummary) {
-                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
+                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, ep_summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
                     .catch((err) => {
                         console.log(err)
                     })
@@ -124,11 +124,11 @@ function getAllEpisodes(req, res, next) {
 
 function getSingleShow(req, res, next) {
     console.log('req: ', req.params)
-    db.any("SELECT shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.summary, shows.show_summary, shows.rating, shows.img_URL " +
+    db.any("SELECT shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.ep_summary, shows.show_summary, shows.rating, shows.img_URL " +
     "FROM shows " +
     "JOIN episodes ON shows.id = episodes.show_id " +
     "WHERE shows.id=${showid} " +
-    "GROUP BY shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.summary, shows.show_summary, shows.rating, shows.img_URL",
+    "GROUP BY shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.ep_summary, shows.show_summary, shows.rating, shows.img_URL",
         {
             showid: req.params.showID
         }
@@ -148,10 +148,10 @@ function getSingleShow(req, res, next) {
 
 function getSchedule(req, res, next) {
     db.any(`
-        SELECT shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.summary, shows.show_summary, shows.rating, shows.img_URL
+        SELECT shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.ep_summary, shows.show_summary, shows.rating, shows.img_URL
         FROM shows
         JOIN episodes ON shows.id = episodes.show_id
-        GROUP BY shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.summary, shows.show_summary, shows.rating, shows.img_URL
+        GROUP BY shows.id, shows.name, episodes.ep_name, episodes.air_date, episodes.air_time, shows.network_name, episodes.season, episodes.num, episodes.ep_summary, shows.show_summary, shows.rating, shows.img_URL
         ORDER BY episodes.air_time;
         `)
       .then((data) => {

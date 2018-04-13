@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS chatterbox1;
-CREATE DATABASE chatterbox1;
+DROP DATABASE IF EXISTS chatterbox;
+CREATE DATABASE chatterbox;
 
-\c chatterbox1;
+\c chatterbox;
 
 -- DROP TABLE IF EXISTS episodes;
 -- DROP TABLE IF EXISTS shows;
@@ -27,7 +27,7 @@ CREATE TABLE episodes (
   air_time VARCHAR,
   season INTEGER,
   num INTEGER,
-  summary TEXT,
+  ep_summary TEXT,
   ep_name TEXT
 );
 
