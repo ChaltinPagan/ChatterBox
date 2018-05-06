@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS chatterbox;
-CREATE DATABASE chatterbox;
+-- DROP DATABASE IF EXISTS chatterbox;
+-- CREATE DATABASE chatterbox;
 
-\c chatterbox;
+-- \c chatterbox;
 
 -- DROP TABLE IF EXISTS episodes;
 -- DROP TABLE IF EXISTS shows;
