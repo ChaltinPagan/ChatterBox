@@ -4,19 +4,10 @@ var db = pgp(connectionString);
 let axios = require('axios');
 
 const truncateTables = () => {
-  return db.none('SET FOREIGN_KEY_CHECKS = 0')
-           .then(() => {
-             return db.none('TRUNCATE TABLE episodes');
-           })
-           .then(() => {
-             return db.none('TRUNCATE TABLE shows');
-           })
-           .then(() => {
-             db.none('SET FOREIGN_KEY_CHECKS = 1');
-           })
+    return db.none('TRUNCATE TABLE shows CASCADE');
 }
 
-function getAPI() {
+function getAPI(req, res, next) {
     axios.get('https://api.tvmaze.com/schedule/')
     .then((data) => {
       truncateTables()
