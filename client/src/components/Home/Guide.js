@@ -23,6 +23,7 @@ const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInput, han
     // Returns shows that match the specified hour range.
     // Sorts shows by airtime.
     let tv = arr.filter( (el, i, arr) => {
+        console.log('the element: ', el)
         if (el.network_name !== null
             && el.network_name !== "Playboy TV"
             && (el.air_time.match(hourStr + ":") 
