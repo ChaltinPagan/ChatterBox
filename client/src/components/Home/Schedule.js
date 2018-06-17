@@ -26,7 +26,7 @@ export class Schedule extends Component {
                   return res.data[key];
               })
              
-              console.log("res:", res);
+              console.log("apiArr:", apiArr);
               this.setState({
                   arr: apiArr[0]
                   // dateInput: userDate
