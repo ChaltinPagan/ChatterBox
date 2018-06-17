@@ -3,12 +3,23 @@ var connectionString = process.env.DATABASE_URL;
 var db = pgp(connectionString);
 let axios = require('axios');
 
+const truncateTables = () => {
+  return db.none('SET FOREIGN_KEY_CHECKS = 0')
+           .then(() => {
+             return db.none('TRUNCATE TABLE episodes');
+           })
+           .then(() => {
+             return db.none('TRUNCATE TABLE shows');
+           })
+           .then(() => {
+             db.none('SET FOREIGN_KEY_CHECKS = 1');
+           })
+}
+
 function getAPI() {
     axios.get('https://api.tvmaze.com/schedule/')
     .then((data) => {
-      db.none('TRUNCATE TABLE episodes')
-        .then(() => {
-          db.none('TRUNCATE TABLE shows')
+      truncateTables()
             .then(() => {
               let listOfData = data.data;
               for (let i=0; i < listOfData.length; i++) {
