@@ -32,7 +32,7 @@ const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInput, han
     }).sort( (a, b) => {
         return a.air_time > b.air_time;
     })
-
+    console.log('this is the ultimate array, ', tv);
     return (
         <div>
             <table className='schedule-table'>
