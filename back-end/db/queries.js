@@ -71,7 +71,6 @@ function getAPI() {
             })
             res.status(200)
                .send('yay!')
-          })
     })
     .catch(err => {
         console.log(err);
