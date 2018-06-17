@@ -4,6 +4,10 @@ import FaAngleDoubleLeft from 'react-icons/lib/fa/angle-double-left';
 import FaAngleDoubleRight from 'react-icons/lib/fa/angle-double-right'
 
 const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInput, handleReset, handleUserInput, userInput}) => {
+    if (!arr) {
+      arr = [];
+    }
+    
     let hourStr = hour < 10 ? hour.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) : hour.toString();
     
     // Re-write airtimes to reflect 12-hour clock.

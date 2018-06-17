@@ -11,7 +11,7 @@ export class Schedule extends Component {
             date: new Date(),
             dateInput: "",
             hour: new Date().getHours(), 
-            arr: [], 
+            arr: null, 
             userInput: ""
         }
     }
@@ -27,10 +27,12 @@ export class Schedule extends Component {
               })
              
               console.log("apiArr:", apiArr);
-              this.setState({
-                  arr: apiArr[0]
-                  // dateInput: userDate
-              })
+              if (!this.state.arr) {
+                this.setState({
+                    arr: apiArr[0]
+                    // dateInput: userDate
+                })
+              }
           })
           .catch(error => console.log(error))
         })
