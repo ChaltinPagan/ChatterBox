@@ -16,7 +16,7 @@ function getAPI(req, res, next) {
               for (let i=0; i < listOfData.length; i++) {
                 let item = listOfData[i];
 
-                let showId = Number(item.show.id);
+                let showId = Number(item.id);
                 let showName = item.show.name;
                 let showType= item.show.type;
                 let showLanguage = item.show.language;
