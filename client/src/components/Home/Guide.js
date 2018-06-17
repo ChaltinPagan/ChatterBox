@@ -19,6 +19,9 @@ const TvGuide = ({hour, arr, dateInput, moreTime, lessTime, handleDateInput, han
     let year = new Date().getFullYear()
     let date = dateInput ? dateInput : `${year}-${(month < 10 ? `0` + month : month)}-${(day < 10 ? `0` + day : day)}`
 
+    console.log("this is the hour: ", hour)
+    console.log("this is the hour string: ", hourStr)
+
     // Filters out Playboy TV network and any other show without a network name. 
     // Returns shows that match the specified hour range.
     // Sorts shows by airtime.
