@@ -3,78 +3,65 @@ var connectionString = process.env.DATABASE_URL;
 var db = pgp(connectionString);
 let axios = require('axios');
 
-function getAPI (url) {
-    axios.get(url)
-    .then(function(data){
-            let listOfData = data.data;
-                for (let i=0; i<listOfData.length; i++){
-                    let item = listOfData[i];
-
-                    let showId = Number(item.show.id);
-                    let showName = item.show.name;
-                    let showType= item.show.type;
-                    let showLanguage = item.show.language;
-                    let showSummary = item.show.summary;
-
-
-                    let imageData = item.show.image;
-                    let showRatingData = item.show.rating;
-                    let showNetworkData = item.show.network;
-                    let showNetworkNameData = item.show.network;
-
-                    let epId = Number(item.id);
-                    let airDate = item.airdate;
-                    let airTime = item.airtime;
-                    let epSeason = item.season;
-                    let epNum = item.number;
-                    let epSummary = item.summary;
-                    let epName= item.name;
-
-           if (imageData && showRatingData && showNetworkNameData) {
-
-            let showNetworkName = item.show.network.name;
-            let showRating = item.show.rating.average;
-            let showIMG = item.show.image.original;
-
-            db.none('INSERT INTO shows (id, name, type, language, img_URL, show_summary, network_name, rating, active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showIMG, showSummary, showNetworkName, showRating, true])
+function getAPI() {
+    axios.get('https://api.tvmaze.com/schedule/')
+    .then((data) => {
+      db.none('TRUNCATE TABLE episodes')
+        .then(() => {
+          db.none('TRUNCATE TABLE shows')
             .then(() => {
-                if (epSummary) {
-                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
-                    .catch((err) => {
-                        console.log(err)
+              let listOfData = data.data;
+              for (let i=0; i < listOfData.length; i++) {
+                let item = listOfData[i];
+
+                let showId = Number(item.show.id);
+                let showName = item.show.name;
+                let showType= item.show.type;
+                let showLanguage = item.show.language;
+                let showSummary = item.show.summary;
+                let imageData = item.show.image;
+                let showRatingData = item.show.rating;
+                let showNetworkData = item.show.network;
+                let showNetworkNameData = item.show.network;
+
+                let epId = Number(item.id);
+                let airDate = item.airdate;
+                let airTime = item.airtime;
+                let epSeason = item.season;
+                let epNum = item.number;
+                let epSummary = item.summary;
+                let epName= item.name;
+
+                if (imageData && showRatingData && showNetworkNameData) {
+                  let showNetworkName = item.show.network.name;
+                  let showRating = item.show.rating.average;
+                  let showIMG = item.show.image.original;
+
+                  db.none('INSERT INTO shows (id, name, type, language, img_URL, show_summary, network_name, rating, active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showIMG, showSummary, showNetworkName, showRating, true])
+                    .then(() => {
+                      if (epSummary) {
+                        db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
+                          .catch((err) => {
+                              console.log(err)
+                          })
+                      } else {
+                        db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, ep_name) VALUES ($1, $2, $3, $4, $5, $6)', [showId, airDate, airTime, epSeason, epNum, epName])
+                          .catch((err) => {
+                              console.log(err)
+                          })
+                      }
                     })
-                } else {
-                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, ep_name) VALUES ($1, $2, $3, $4, $5, $6)', [showId, airDate, airTime, epSeason, epNum, epName])
-                    .catch((err) => {
-                        console.log(err)
-                    })
-                 }
+                }
+                //for loop ends below
+              }
             })
             .catch((err) => {
-                console.log(err)
+              console.log(err)
             })
-           } else {
-            db.none('INSERT INTO shows (id, name, type, language, show_summary, active ) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO NOTHING;', [showId, showName, showType, showLanguage, showSummary, true])
-            .then(() => {
-                if (epSummary) {
-                    db.none('INSERT INTO episodes (show_id, air_date, air_time, season, num, summary, ep_name) VALUES ($1, $2, $3, $4, $5, $6, $7)', [showId, airDate, airTime, epSeason, epNum, epSummary, epName])
-                    .catch((err) => {
-                        console.log(err)
-                    })
-                } else {
-                    db.none('INSERT INTO episodes (id, air_date, air_time, season, num, ep_name) VALUES ($1, $2, $3, $4, $5, $6)', [showId, airDate, airTime, epSeason, epNum, epName])
-                    .catch((err) => {
-                        console.log(err)
-                    })
-                 }
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        }
-        }
-           })
-
+            res.status(200)
+               .send('yay!')
+          })
+    })
     .catch(err => {
         console.log(err);
     })
@@ -163,8 +150,6 @@ function getSchedule(req, res, next) {
           return next(err);
       })
 }
-
-getAPI('https://api.tvmaze.com/schedule/');
 
 
 module.exports = {

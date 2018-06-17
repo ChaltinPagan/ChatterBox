@@ -17,26 +17,27 @@ export class Schedule extends Component {
     }
 
     // Handles date input by user. Gets US TV schedule for day specified.
-    handleDateInput = () => {
-        // const userDate = document.getElementById('date').value;
-        // axios.get(`http://api.tvmaze.com/schedule?date=${userDate}`)
-        axios.get(`/shows/schedule`)        
-        .then( res => {
-            let apiArr = Object.keys(res.data).map(key => {
-                return res.data[key];
-            })
-           
-            console.log("res:", res);
-            this.setState({
-                arr: apiArr[0]
-                // dateInput: userDate
-            })
+    handleShowPopulation = () => {
+        axios.get('/shows/seed')
+        .then(() => {
+          axios.get(`/shows/schedule`)        
+          .then( res => {
+              let apiArr = Object.keys(res.data).map(key => {
+                  return res.data[key];
+              })
+             
+              console.log("res:", res);
+              this.setState({
+                  arr: apiArr[0]
+                  // dateInput: userDate
+              })
+          })
+          .catch(error => console.log(error))
         })
-        .catch(error => console.log(error))
     }
 
     componentDidMount = () => {
-        this.handleDateInput();
+        this.handleShowPopulation();
     }
 
     // Increase schedule time by 1 hour. Stops at midnight.

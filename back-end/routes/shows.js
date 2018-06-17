@@ -6,5 +6,6 @@ let db = require('../db/queries');
 router.get('/all', db.getAllShows);
 router.get('/schedule', db.getSchedule);
 router.get('/:showID', db.getSingleShow);
+router.get('/seed', db.getAPI)
 
 module.exports = router;
